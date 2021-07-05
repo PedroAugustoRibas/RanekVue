@@ -1,28 +1,78 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <TheHeader/>
+    <main>
+      <router-view/>
+    </main>
+    <TheFooter/>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue';
+import TheHeader from '../src/components/TheHeader.vue'
+import TheFooter from '../src/components/TheFooter.vue'
 
-export default {
-  name: 'App',
-  components: {
-    HelloWorld,
-  },
-};
+export default({
+  components:{
+    TheHeader,
+    TheFooter
+  }
+})
 </script>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style>
+    *{
+       box-sizing: border-box; 
+    }
+    body,
+    ul,
+    li,
+    h1,
+    h2,
+    p{
+    padding: 0px;
+    margin: 0px;
+    }
+    ul{
+        list-style: none;
+    }
+    body{
+    font-family:Arial, Helvetica, sans-serif;
+    color: #345;
+    background: url("./assets/pattern.svg") repeat top;
+    }
+    a{
+        color: #345;
+        text-decoration: none;
+    }
+    img{
+        max-width: 100%;
+        display:block;
+    }
+    .btn{
+        display: block;
+        padding: 10px 30px;
+        background: #87f;
+        color:#fff;
+        text-align: center;
+        font-size:1rem;
+        box-shadow: 0 4px 8px rgba(30, 60, 90,0.2);
+        transition: all 0.3s;
+        border:none;
+        cursor: pointer;
+    }
+
+    .btn:hover{
+        background: #65d;
+        transform: scale(1.1);
+    }
+    #app{
+      display: flex;
+      min-height: 100vh;
+      flex-direction: column;
+    }
+    main{
+      flex:1;
+    }
+
 </style>
