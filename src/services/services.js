@@ -8,9 +8,9 @@ const  axiosInstance = axios.create({
 
 export const api = {
     get(endpoint){
-        axiosInstance.get(endpoint)
+       return axiosInstance.get(endpoint)
     },
     post(endpoint,body){
-        axiosInstance.post(endpoint,body)
+       return axiosInstance.post(endpoint,body)
     }
 }

@@ -1,5 +1,5 @@
 <template>
-  <header>
+  <header id="header">
       <nav>
           <router-link to="/" class="logo">
             <img src="@/assets/ranek.svg" alt="Ranek">
@@ -11,7 +11,7 @@
 
 <script>
 export default({
-    name:"header"
+    name:"header_page"
 })
 </script>
 

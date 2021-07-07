@@ -1,14 +1,19 @@
 <template>
-  <section>
-    <div v-for="(item,index) in produtos" :key="index">
-       
-        <img v-if="item.fotos" src="item.fotos[0].src" alt="item.fotos[0].titulo" >
-        <p class="preco">{{item.preco}}</p>
-        <h2 class="titulo">{{item.nome}}</h2>
-        <p>{{item.descricao}}</p>
+  <section class="produtos-container">
+    <div v-if="produtos && produtos.length >0" class="produtos">
+      <div class="produto" v-for="(item,index) in produtos" :key="index">  
+        <router-link to="/">   
+          <img v-if="item.fotos" src="item.fotos[0].src" alt="item.fotos[0].titulo" >
+          <p class="preco">{{item.preco}}</p>
+          <h2 class="titulo">{{item.nome}}</h2>
+          <p>{{item.descricao}}</p>
+        </router-link>
+      </div>   
+    </div>
+    <div  v-else-if="produtos && produtos.length ===0">
+        <p class="sem-resultado">Busca sem resultados, tente outro termo</p>
 
     </div>
-    
   </section>
 </template>
 
@@ -19,14 +24,30 @@ export default {
   name: 'produto-lista',
   data(){
     return{
-      produtos:null
+      produtos:null,
+      produtosPagina:10
+    }
+  },
+  computed:{
+    url(){
+      let query_string = ""; 
+      for(let key in this.$route.query){
+        query_string += `&${key}=${this.$route.query[key]}`
+      }
+
+      return "/produto/?_limit="+this.produtosPagina+ " "+query_string
     }
   },
   methods:{
     getProdutos(){
-     api.get("/produto").then(response => {
+     api.get(this.url).then(response => {
         this.produtos = response.data;
       });
+    }
+  },
+  watch:{
+    url(){
+      this.getProdutos()
     }
   },
   created(){
@@ -34,3 +55,43 @@ export default {
   }
 }
 </script>
+<style scoped>
+  .produtos-container{
+    max-width: 2000px;
+    margin: 0px;
+  }
+  .produtos{
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    grid-gap: 30px;
+    margin: 30px;
+  }
+  .produto{
+    box-shadow: 0 4px 8px rgba(30, 60, 90, 0.1);
+    padding: 10px;
+    background: #fff;
+    border-radius:4px;
+    transition:all 0.2s;
+  }
+  .produto:hover{
+    box-shadow: 0 4px 8px rgba(30, 60, 90, 0.2);
+    transform: scale(1.1);
+    position: relative;
+    z-index: 1;
+  }
+
+  .produto img{
+    border-radius:4px;
+    margin-bottom: 20px;
+  }
+  .titulo{
+    margin-bottom: 10px;
+  }
+  .preco{
+    color: #e80;
+    font-weight: bold;
+  }
+  .sem-resultado{
+    text-align: center;
+  }
+</style>
