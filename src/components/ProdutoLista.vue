@@ -9,23 +9,33 @@
           <p>{{item.descricao}}</p>
         </router-link>
       </div>   
+      <produtos-paginar 
+      :produtos_total="produtos_total"
+      :produtos_pagina="produtos_pagina"
+      >
+
+      </produtos-paginar>
     </div>
     <div  v-else-if="produtos && produtos.length ===0">
         <p class="sem-resultado">Busca sem resultados, tente outro termo</p>
-
     </div>
   </section>
 </template>
 
 <script>
+import ProdutosPaginar from "./ProdutosPaginar.vue";
 import {api} from "../services/services";
 
 export default {
   name: 'produto-lista',
+  components:{
+    ProdutosPaginar
+  },
   data(){
     return{
       produtos:null,
-      produtosPagina:10
+      produtos_pagina:10,
+      produtos_total:0
     }
   },
   computed:{
@@ -35,12 +45,13 @@ export default {
         query_string += `&${key}=${this.$route.query[key]}`
       }
 
-      return "/produto/?_limit="+this.produtosPagina+ " "+query_string
+      return "/produto/?_limit="+this.produtos_pagina+ " "+query_string
     }
   },
   methods:{
     getProdutos(){
      api.get(this.url).then(response => {
+        this.produtos_total = Number(response.headers['x-total-count']);
         this.produtos = response.data;
       });
     }
@@ -57,7 +68,7 @@ export default {
 </script>
 <style scoped>
   .produtos-container{
-    max-width: 2000px;
+    max-width: 2300px;
     margin: 0px;
   }
   .produtos{
