@@ -9,11 +9,10 @@
           <p>{{item.descricao}}</p>
         </router-link>
       </div>   
-      <produtos-paginar 
-      :produtos_total="produtos_total"
+       <produtos-paginar 
+      :paginas_total="produtos_total"
       :produtos_pagina="produtos_pagina"
       >
-
       </produtos-paginar>
     </div>
     <div  v-else-if="produtos && produtos.length ===0">

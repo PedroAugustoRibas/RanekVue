@@ -2,7 +2,9 @@
    <div>
     <p>Pagina {{paginas}}</p>
     <ul>
-        <li><router-link :to="{query:{_page:1}}"></router-link></li>    
+        <li v-for="pagina in paginas_total" :key="pagina">
+            <router-link :to="{query:{_page:pagina}}">{{pagina}}</router-link>
+        </li>
     </ul>
    </div>     
 </template>
@@ -12,7 +14,7 @@
 export default ({
    name:"produtos-paginar",
    props:{
-       produtos_total:{
+       paginas_total:{
            type:Number,
            default:1
        },
@@ -23,9 +25,8 @@ export default ({
    },
    computed:{
        paginas(){
-           let total = this.produtos_total/this.produtos_pagina;
-           console.log(total)
-           return total
+           let total = this.paginas_total/this.produtos_pagina;
+           return total!==Infinity?Math.ceil(total):0;
        }
    }
 })
