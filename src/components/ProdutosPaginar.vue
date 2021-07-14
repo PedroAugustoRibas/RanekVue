@@ -1,37 +1,70 @@
 <template>
-   <div>
-    <p>Pagina {{paginas}}</p>
-    <ul>
-        <li v-for="pagina in paginas_total" :key="pagina">
-            <router-link :to="{query:{_page:pagina}}">{{pagina}}</router-link>
-        </li>
-    </ul>
-   </div>     
+  <ul v-if="paginasTotal > 1">
+    <li v-for="pagina in   paginas" :key="pagina">
+      <router-link :to="{query: query(pagina)}">{{pagina}}</router-link>
+    </li>
+  </ul>
 </template>
 
 <script>
+export default {
+  props: {
+    produtosPorPagina: {
+      type: Number,
+      default: 1
+    },
+    produtosTotal: {
+      type: Number,
+      default: 1
+    }
+  },
+  methods: {
+    query(pagina) {
+      return {
+        ...this.$route.query,
+        _page: pagina
+      };
+    }
+  },
+  computed: {
+    paginas(){
+       const current = Number(this.$route.query._page);
+       const range = 9;
+       const offset = Math.ceil(range/2)
+       const pages_array = [];
 
-export default ({
-   name:"produtos-paginar",
-   props:{
-       paginas_total:{
-           type:Number,
-           default:1
-       },
-       produtos_pagina:{
-           type:Number,
-           default:1
-       } 
-   },
-   computed:{
-       paginas(){
-           let total = this.paginas_total/this.produtos_pagina;
-           return total!==Infinity?Math.ceil(total):0;
+       for (let index = 0; index < this.paginasTotal; index++) {
+           pages_array.push(index);   
        }
-   }
-})
+       pages_array.splice(range,current-offset);
+       return pages_array;
+    },
+    paginasTotal() {
+      const total = this.produtosTotal / this.produtosPorPagina;
+      return total !== Infinity ? Math.ceil(total) : 0;
+    }
+  }
+};
 </script>
 
 <style>
+ul {
+  grid-column: 1 / -1;
+}
 
+li {
+  display: inline-block;
+}
+
+li a {
+  padding: 2px 8px;
+  border-radius: 2px;
+  margin: 4px;
+}
+
+li a.router-link-exact-active,
+li a:hover {
+  background: #87f;
+  color: #fff;
+}
 </style>

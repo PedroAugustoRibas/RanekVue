@@ -10,8 +10,8 @@
         </router-link>
       </div>   
        <produtos-paginar 
-      :paginas_total="produtos_total"
-      :produtos_pagina="produtos_pagina"
+      :produtosTotal="produtos_total"
+      :produtosPorPagina="produtos_pagina"
       >
       </produtos-paginar>
     </div>
@@ -33,7 +33,7 @@ export default {
   data(){
     return{
       produtos:null,
-      produtos_pagina:10,
+      produtos_pagina:4,
       produtos_total:0
     }
   },
