@@ -1,6 +1,7 @@
 <template>
   <section class="produtos-container">
-    <div v-if="produtos && produtos.length >0" class="produtos">
+    <transition mode="out-in">
+    <div v-if="produtos && produtos.length >0" class="produtos" key="produtos">
       <div class="produto" v-for="(item,index) in produtos" :key="index">  
         <router-link to="/">   
           <img v-if="item.fotos" src="item.fotos[0].src" alt="item.fotos[0].titulo" >
@@ -15,25 +16,29 @@
       >
       </produtos-paginar>
     </div>
-    <div  v-else-if="produtos && produtos.length ===0">
+    <div  v-else-if="produtos && produtos.length ===0" key="sem-resultados">
         <p class="sem-resultado">Busca sem resultados, tente outro termo</p>
     </div>
+        <pagina-carregando key="carrgando" v-else></pagina-carregando>
+    </transition>
   </section>
 </template>
 
 <script>
 import ProdutosPaginar from "./ProdutosPaginar.vue";
 import {api} from "../services/services";
+import PaginaCarregando from './PaginaCarregando.vue';
 
 export default {
   name: 'produto-lista',
   components:{
-    ProdutosPaginar
+    ProdutosPaginar,
+    PaginaCarregando
   },
   data(){
     return{
       produtos:null,
-      produtos_pagina:4,
+      produtos_pagina:5,
       produtos_total:0
     }
   },
@@ -49,10 +54,13 @@ export default {
   },
   methods:{
     getProdutos(){
-     api.get(this.url).then(response => {
+     this.produtos = null;
+     window.setTimeout(()=>{
+       api.get(this.url).then(response => {
         this.produtos_total = Number(response.headers['x-total-count']);
         this.produtos = response.data;
       });
+     },1500);  
     }
   },
   watch:{

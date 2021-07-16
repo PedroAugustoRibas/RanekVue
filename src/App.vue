@@ -95,4 +95,21 @@ export default({
 
   } 
 
+  .v-enter,
+  .v-leave-to{
+    opacity: 0;
+  }
+
+  .v-enter-active,
+  .v-leave-active{
+    transition: all 0.3s
+  }
+
+  .v-enter{
+    transform: translate3d(0,-20px,0);
+  }
+
+  .v-leave{
+    transform: translate3d(0,20px,0);
+  }
 </style>
